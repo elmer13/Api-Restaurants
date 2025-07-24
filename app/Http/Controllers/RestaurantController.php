@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Restaurant;
 use Illuminate\Http\Request;
 
 class RestaurantController extends Controller
@@ -11,7 +12,8 @@ class RestaurantController extends Controller
      */
     public function index()
     {
-        //
+        $restaurants = Restaurant::all();
+        return response()->json($restaurants);
     }
 
     /**
@@ -27,15 +29,22 @@ class RestaurantController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string',
+            'address' => 'required|string',
+            'phone' => 'nullable|string|max:20'
+        ]);
+
+        $restaurant = Restaurant::create($validated);
+        return response()->json($restaurant, 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Restaurant $restaurant)
     {
-        //
+        return response()->json($restaurant);
     }
 
     /**
@@ -49,16 +58,24 @@ class RestaurantController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Restaurant $restaurant)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'string',
+            'address' => 'string',
+            'phone' => 'nullable|string|max:20'
+        ]);
+
+        $restaurant->update($validated);
+        return response()->json($restaurant);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Restaurant $restaurant)
     {
-        //
+        $restaurant->delete();
+        return response()->json(['message' => 'Restaurant deleted']);
     }
 }
