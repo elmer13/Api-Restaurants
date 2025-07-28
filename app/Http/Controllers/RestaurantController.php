@@ -12,8 +12,8 @@ class RestaurantController extends Controller
      */
     public function index()
     {
-        $restaurants = Restaurant::all();
-        return response()->json($restaurants);
+        $restaurants = Restaurant::orderBy('id','desc')->get();
+        return view('restaurants.index', compact('restaurants'));   
     }
 
     /**
@@ -21,7 +21,7 @@ class RestaurantController extends Controller
      */
     public function create()
     {
-        //
+        return view('restaurants.create');
     }
 
     /**
@@ -36,7 +36,7 @@ class RestaurantController extends Controller
         ]);
 
         $restaurant = Restaurant::create($validated);
-        return response()->json($restaurant, 201);
+        return redirect('/api/restaurants');
     }
 
     /**
@@ -44,15 +44,15 @@ class RestaurantController extends Controller
      */
     public function show(Restaurant $restaurant)
     {
-        return response()->json($restaurant);
+        return view('restaurants.show', compact('restaurant'));   
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Restaurant $restaurant)
     {
-        //
+        return view('restaurants.edit', compact('restaurant'));  
     }
 
     /**
@@ -67,7 +67,7 @@ class RestaurantController extends Controller
         ]);
 
         $restaurant->update($validated);
-        return response()->json($restaurant);
+        return redirect("/api/restaurants/{$restaurant->id}");
     }
 
     /**
@@ -76,6 +76,6 @@ class RestaurantController extends Controller
     public function destroy(Restaurant $restaurant)
     {
         $restaurant->delete();
-        return response()->json(['message' => 'Restaurant deleted']);
+        return redirect('/api/restaurants');
     }
 }
