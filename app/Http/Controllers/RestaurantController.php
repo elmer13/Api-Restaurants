@@ -13,8 +13,13 @@ class RestaurantController extends Controller
     public function index()
     {
         $restaurants = Restaurant::orderBy('id','desc')->get();
+
+        if ($this->isApiRequest()) {
+            return response()->json($restaurants);
+        }
+
         return view('restaurants.index', compact('restaurants'));   
-    }
+    }  
 
     /**
      * Show the form for creating a new resource.
@@ -42,7 +47,7 @@ class RestaurantController extends Controller
 
        $restaurant = Restaurant::create($request->all());
 
-        if ($request->wantsJson()) {
+        if ($this->isApiRequest()) {
             return response()->json([
                 'message' => 'Restaurant successfully created for API',
                 'data' => $restaurant
@@ -58,6 +63,9 @@ class RestaurantController extends Controller
      */
     public function show(Restaurant $restaurant)
     {
+        if ($this->isApiRequest()) {
+            return response()->json($restaurant);
+        }
         return view('restaurants.show', compact('restaurant'));   
     }
 
@@ -87,7 +95,7 @@ class RestaurantController extends Controller
 
         $restaurant->update($request->all());
 
-        if ($request->wantsJson()) {
+        if ($this->isApiRequest()) {
             return response()->json([
                 'message' => 'Restaurant successfully updated for API',
                 'data' => $restaurant
@@ -103,6 +111,16 @@ class RestaurantController extends Controller
     public function destroy(Restaurant $restaurant)
     {
         $restaurant->delete();
+
+        if ($this->isApiRequest()) {
+            return response()->json(['message' => 'Restaurant deleted']);
+        }
+        
         return redirect()->route('restaurants.index');
     }
+
+    protected function isApiRequest()
+    {
+        return request()->wantsJson() || request()->is('api/*') || strpos(request()->getRequestUri(), '/api/') === 0;
+    }      
 }
