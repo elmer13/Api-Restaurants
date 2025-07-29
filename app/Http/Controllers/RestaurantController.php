@@ -29,14 +29,28 @@ class RestaurantController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'name' => 'required|string',
             'address' => 'required|string',
-            'phone' => 'nullable|string|max:20'
+            'phone' => 'nullable|string|max:20|regex:/^\+?[0-9\s\-]+$/'
+        ],[
+            'name.required' => 'The restaurant name is required',
+            'address.required' => 'The address is required',
+            'phone.max' => 'The phone number must not exceed 20 characters',
+            'phone.regex' => 'The phone number must start with + followed by numbers, or just numbers'
         ]);
 
-        $restaurant = Restaurant::create($validated);
-        return redirect('/api/restaurants');
+       $restaurant = Restaurant::create($request->all());
+
+        if ($request->wantsJson()) {
+            return response()->json([
+                'message' => 'Restaurant successfully created for API',
+                'data' => $restaurant
+            ], 201);
+        }
+
+
+        return redirect()->route('restaurants.index')->with('success', 'Restaurant successfully created');
     }
 
     /**
@@ -60,14 +74,27 @@ class RestaurantController extends Controller
      */
     public function update(Request $request, Restaurant $restaurant)
     {
-        $validated = $request->validate([
-            'name' => 'string',
-            'address' => 'string',
-            'phone' => 'nullable|string|max:20'
+        $request->validate([
+            'name' => 'required|string',
+            'address' => 'required|string',
+            'phone' => 'nullable|string|max:20|regex:/^\+?[0-9\s\-]+$/'
+        ],[
+            'name.required' => 'The restaurant name is required',
+            'address.required' => 'The address is required',
+            'phone.max' => 'The phone number must not exceed 20 characters',
+            'phone.regex' => 'The phone number must start with + followed by numbers, or just numbers'
         ]);
 
-        $restaurant->update($validated);
-        return redirect("/api/restaurants/{$restaurant->id}");
+        $restaurant->update($request->all());
+
+        if ($request->wantsJson()) {
+            return response()->json([
+                'message' => 'Restaurant successfully updated for API',
+                'data' => $restaurant
+            ], 201);
+        }
+
+        return redirect()->route('restaurants.show', $restaurant)->with('success', 'Restaurant successfully updated');
     }
 
     /**
@@ -76,6 +103,6 @@ class RestaurantController extends Controller
     public function destroy(Restaurant $restaurant)
     {
         $restaurant->delete();
-        return redirect('/api/restaurants');
+        return redirect()->route('restaurants.index');
     }
 }
