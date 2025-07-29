@@ -1,6 +1,6 @@
 <x-app-layout>
     <div class="max-w-2xl mx-auto p-6">
-        <a href="/api/restaurants" class="inline-block mb-6 px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-md text-gray-700 transition-colors duration-200">
+        <a href="{{route('restaurants.index')}}" class="inline-block mb-6 px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-md text-gray-700 transition-colors duration-200">
             Back to list
         </a>
 
@@ -18,11 +18,12 @@
         </div>
 
         <div class="flex space-x-4">
-            <a href="/api/restaurants/{{$restaurant->id}}/edit" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md transition-colors duration-200">
+            <a href="{{route('restaurants.edit', $restaurant)}}" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md transition-colors duration-200">
                 Edit Restaurant
             </a>
 
-            <form action="/api/restaurants/{{$restaurant->id}}" method="POST">
+            <form action="{{route('restaurants.destroy', $restaurant)}}" method="POST">
+                @csrf
                 @method('Delete')
                 <button type="submit" class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md transition-colors duration-200" onclick="return confirm('Are you sure you want to delete this restaurant?')">
                     Delete Restaurant

@@ -2,12 +2,13 @@
     <div class="max-w-2xl mx-auto p-6">
         <div class="flex justify-between items-center mb-8">
             <h1 class="text-2xl font-bold text-gray-800">Edit Restaurant</h1>    
-            <a href="/api/restaurants" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-md text-gray-700 transition-colors duration-200">
+            <a href="{{route('restaurants.index')}}" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-md text-gray-700 transition-colors duration-200">
                 Back to list
             </a>
         </div>
 
-        <form action="/api/restaurants/{{$restaurant->id}}" method="POST" class="bg-white rounded-lg shadow-md overflow-hidden p-6">
+        <form action="{{route('restaurants.update', $restaurant)}}" method="POST" class="bg-white rounded-lg shadow-md overflow-hidden p-6">
+            @csrf
             @method('PUT')
             <div class="space-y-4">
                 <div>
