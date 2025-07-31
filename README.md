@@ -18,12 +18,12 @@ RESTful API for restaurant management with JWT authentication and interactive do
 
 ## 📋 Table of Contents
 - [Requirements](#-requirements)
-- [Development Environment](#-development)
-- [Initial Configuration](#-initial)
+- [Development Environment](#-development-environment)
+- [Initial Configuration](#-initial-configuration)
 - [Endpoints](#-endpoints)
-- [Autenticación con Sanctum](#-autenticación)
-- [Documentación](#-documentación)
-- [Frontend (Opcional)](#-frontend)
+- [Authentication with Sanctum](#-authentication-with-sanctum)
+- [API Documentation with Swagger](#-api-documentation-with-swagger)
+- [Frontend](#-frontend)
 
 ## 🛠 Requirements
 - PHP 8.2+ (https://www.php.net/downloads.php)
@@ -201,7 +201,7 @@ php artisan serve
      */
    ```
 
-## 🖥 Frontend (Optional) CRUD
+## 🖥 Frontend
  For this project, we've utilized **Laravel Blade** and **Tailwind CSS** for frontend development.
 
 ### Key Features:
