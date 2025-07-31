@@ -314,3 +314,24 @@ php artisan serve
   </div>
 </div>
 ```
+
+## 💛 Credits
+
+### Author
+Elmer García Yavi 
+
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github)](https://github.com/elmer13)  
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/elmer-garcia-yavi-486828239/)  
+✉️ egarciayavi@hotmail.com 
+
+### Special Thanks
+- To the [Laravel](https://laravel.com) community for their incredible PHP framework
+- [Tailwind CSS](https://tailwindcss.com) for their utility-first CSS approach
+- [Swagger](https://swagger.io) for enabling interactive API documentation
+
+### License
+[![MIT License](https://img.shields.io/badge/Licencia-MIT-green.svg?style=for-the-badge)](LICENSE)
+
+---
+
+**"If you're seeing this, thanks for checking out my project!"** 🌟
