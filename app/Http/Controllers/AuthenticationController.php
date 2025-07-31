@@ -12,9 +12,27 @@ use App\Models\User;
 
 class AuthenticationController extends Controller
 {
-    /**
-     * Register a new account.
-     */
+
+        /**
+     * @OA\Post(
+     *     path="/api/register",
+     *     summary="Create a new user",
+     *     description="Let create a new user with the ",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/User")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Restaurant created successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/User")
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Bad request"
+     *     )
+     * )
+    */   
     public function register(Request $request)
     {
         try {
@@ -54,8 +72,25 @@ class AuthenticationController extends Controller
     }
 
     /**
-     * Login and return auth token.
-     */
+     * @OA\Post(
+     *     path="/api/login",
+     *     summary="Login with a user",
+     *     description="Let login with a user and return auth token with the ",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/User")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="User login successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/User")
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Bad request"
+     *     )
+     * )
+    */       
     public function login(Request $request)
     {
         try {
@@ -106,8 +141,21 @@ class AuthenticationController extends Controller
     }
 
     /**
-     * Get list of users (paginated) — protected route.
-     */
+    * @OA\Get(
+    *     path="/api/get-user",
+    *     summary="Get all users",
+    *     description="Return a list of users.",
+    *     security={{"bearerAuth": {}}},
+    *     @OA\Response(
+    *         response=200,
+    *         description="Users List.",
+    *         @OA\JsonContent(
+    *             type="object",
+    *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/User"))
+     *         )
+    *     )
+    * )
+    */
     public function userInfo()
     {
         try {
@@ -131,8 +179,26 @@ class AuthenticationController extends Controller
     }
 
     /**
-     * Logout user and revoke tokens — protected route.
-     */
+     * @OA\Post(
+     *     path="/api/logout",
+     *     summary="Logout with a user",
+     *     description="Let logout with a user and revoke tokens with the ",
+     *     security={{"bearerAuth": {}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/User")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="User logout successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/User")
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Bad request"
+     *     )
+     * )
+    */    
     public function logOut(Request $request)
     {
         try {

@@ -5,11 +5,34 @@ namespace App\Http\Controllers;
 use App\Models\Restaurant;
 use Illuminate\Http\Request;
 
+/**
+ * @OA\Info(
+ *     title="API RESTful Laravel Documentation",
+ *     version="1.0.0",
+ *     description="Project Restaurants API Laravel 12 Documentation",
+ *     @OA\Contact(
+ *         email="egarciayavi@hotmail.com"
+ *     )
+ * )
+*/
 class RestaurantController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
+    * @OA\Get(
+    *     path="/api/restaurants",
+    *     summary="Get all restaurants",
+    *     description="Return a list of restaurants.",
+    *     security={{"bearerAuth": {}}},
+    *     @OA\Response(
+    *         response=200,
+    *         description="Restaurants List.",
+    *         @OA\JsonContent(
+    *             type="object",
+    *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/Restaurant"))
+     *         )
+    *     )
+    * )
+    */
     public function index()
     {
         $restaurants = Restaurant::orderBy('id','desc')->get();
@@ -30,8 +53,26 @@ class RestaurantController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
+     * @OA\Post(
+     *     path="/api/restaurants",
+     *     summary="Create a new restaurant",
+     *     description="Let create a new restaurant with the ",
+     *     security={{"bearerAuth": {}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/Restaurant")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Restaurant created successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/Restaurant")
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Bad request"
+     *     )
+     * )
+    */        
     public function store(Request $request)
     {
         $request->validate([
@@ -59,8 +100,29 @@ class RestaurantController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
+    * @OA\Get(
+    *     path="/api/restaurants/{id}",
+    *     summary="To get an specific restaurant",
+    *     description="Return a specific restaurant using its ID",
+    *     security={{"bearerAuth": {}}},
+    *     @OA\Parameter(
+    *         name="id",
+    *         in="path",
+    *         description="ID of the restaurant",
+    *         required=true,
+    *         @OA\Schema(type="integer", example=1)
+    *     ),
+    *     @OA\Response(
+    *         response=200,
+    *         description="Restaurant found",
+    *         @OA\JsonContent(ref="#/components/schemas/Restaurant")
+    *     ),
+    *     @OA\Response(
+    *         response=404,
+    *         description="Restaurant not found"
+    *     )
+    * )
+    */
     public function show(Restaurant $restaurant)
     {
         if ($this->isApiRequest()) {
@@ -78,8 +140,33 @@ class RestaurantController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     */
+     * @OA\Put(
+     *     path="/api/restaurants/{id}",
+     *     summary="Update a restaurant",
+     *     description="Update a restaurant using its ID",
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of the restaurant",
+     *         required=true,
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/Restaurant")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Restaurant updated successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/Restaurant")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Restaurant not found"
+     *     )
+     * )
+    */
     public function update(Request $request, Restaurant $restaurant)
     {
         $request->validate([
@@ -105,9 +192,30 @@ class RestaurantController extends Controller
         return redirect()->route('restaurants.show', $restaurant)->with('success', 'Restaurant successfully updated');
     }
 
+
     /**
-     * Remove the specified resource from storage.
-     */
+     * @OA\Delete(
+     *     path="/api/restaurants/{id}",
+     *     summary="Delete a restaurant",
+     *     description="Delete a restaurant using its ID from the database",
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="Restaurant ID",
+     *         required=true,
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description=""
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Restaurant not found"
+     *     )
+     * )
+    */
     public function destroy(Restaurant $restaurant)
     {
         $restaurant->delete();
